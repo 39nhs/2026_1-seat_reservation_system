@@ -1,5 +1,6 @@
 from seat_reservation_system.seat_store import SeatStore
 from seat_reservation_system.seats import SEAT_IDS
+from game.DADmain import play_game
 
 HELP_TEXT = """Commands:
 list                      - List all seats
@@ -8,7 +9,8 @@ cancel <seat_id> [name]   - Cancel a reservation
 status <seat_id>          - Show seat status
 stats                     - Show summary stats
 help                      - Show this help
-exit                      - Exit the program"""
+exit                      - Exit the program
+steal <seat_id> <name>    - Steal a reserved seat """
 
 
 def run_cli():
@@ -26,7 +28,7 @@ def run_cli():
 
         parts = raw.split()
         command, args = parts[0].lower(), parts[1:]
-        if command in {"exit", "quit"}:
+        if command in {"exit", "quit","stop"}:
             break
         if command == "help":
             print(HELP_TEXT)
@@ -55,6 +57,35 @@ def run_cli():
                         **stats
                     )
                 )
+
+            elif command == "steal":
+                _require_args(command, args, 2)
+                seat_id = int(args[0])
+                new_name = args[1]
+
+                _, current_owner = store.status(seat_id)
+                if current_owner is None:
+                    print(f"Error: Seat {seat_id} is available. Just use 'reserve'.")
+                    continue
+
+                print(f"좌석 {seat_id} ({current_owner})의 자리를 뺏기 위한 탄막 게임을 시작합니다!")
+                print("뺏고 싶으면 살아남아라...")
+
+                from game.DADmain import play_game
+                won = play_game()
+                if won:
+                    seat_id, name = store.steal(seat_id, new_name)
+                    _print_seat(seat_id, name)
+                else:
+                    print("나약한녀석")
+
+            
+            
+            
+            
+            
+            
+            
             else:
                 print("Unknown command. Type 'help' for commands.")
         except ValueError as exc:
@@ -69,3 +100,8 @@ def _print_seat(seat_id, name):
 def _require_args(command, args, count):
     if len(args) < count:
         raise ValueError(f"Usage: {command} requires {count} argument(s).")
+
+
+if __name__ == '__main__':
+    from game.DADmain import play_game
+    result = play_game()

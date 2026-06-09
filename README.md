@@ -18,6 +18,7 @@ flowchart LR
     B --> C[예약 상태 확인]
     C --> D[예약 취소]
     C --> E[예약 통계 확인]
+    C --> F[좌석 뺏기]
 
     classDef main fill:#E3F2FD,stroke:#0D47A1,stroke-width:1px,color:#0D47A1;
 
@@ -32,6 +33,7 @@ flowchart LR
 - 특정 좌석 상태 확인
 - 예약 통계 조회
 - 인메모리 기반 좌석 관리
+- 좌석 뺏기
 
 ## 🚀 Quick Start
 
@@ -60,6 +62,7 @@ seat> stats
 | `cancel <seat_id> [name]`  | 특정 좌석의 예약을 취소합니다.      |
 | `status <seat_id>`         | 특정 좌석의 예약 상태를 확인합니다. |
 | `stats`                    | 전체 좌석 예약 통계를 확인합니다.   |
+| `steal`                    | 게임을 클리어하면 좌석을 뺏을 수 있습니다.   |
 | `help`                     | 사용 가능한 명령어를 출력합니다.    |
 | `exit`                     | 프로그램을 종료합니다.              |
 

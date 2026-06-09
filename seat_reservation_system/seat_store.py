@@ -33,3 +33,10 @@ class SeatStore:
         if seat_id not in self._seats:
             raise ValueError("Seat does not exist.")
         return self._seats[seat_id]
+    
+    def steal(self, seat_id, name):
+        current = self._get(seat_id)
+        if current is None:
+            raise ValueError("Seat is not reserved. Use 'reserve' command instead.")
+        self._seats[seat_id] = name
+        return seat_id, name
